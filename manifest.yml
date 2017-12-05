@@ -1,0 +1,5 @@
+---
+applications:
+ - name: test-app-uvm123
+   random-route: true
+   memory: 128M
