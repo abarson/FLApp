@@ -101,6 +101,7 @@ def create_msg(msg_subject, msg_body):
 @app.route('/api/messenger', methods=['POST'])
 def messenger():
     msg = request.json['message']
+    print(msg)
     response = conversation_helper.process_message(msg)
     return json.dumps({"response": response})
     

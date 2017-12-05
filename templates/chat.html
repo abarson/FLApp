@@ -60,7 +60,7 @@
             <p class="me-chat">hello</p>
             <p class="you-chat">hi</p>
         </div>
-        <input type="text">
+        <input type="text" class="chat-box">
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -70,20 +70,21 @@
 
     <script>
         //Submit data when enter key is pressed
-        $('#user_name').keydown(function (e) {
-            var name = $('#user_name').val();
-            if (e.which == 13 && name.length > 0) { //catch Enter key
+        $('.chat-box').keydown(function (e) {
+            var message = $('.chat-box').val();
+            if (e.which == 13 && message.length > 0) { //catch Enter key
                 //POST request to API to create a new visitor entry in the database
                 $.ajax({
                     method: "POST",
-                    url: "./api/visitors",
+                    url: "./api/messenger",
                     contentType: "application/json",
-                    data: JSON.stringify({ name: name })
+                    data: JSON.stringify({ message: message })
                 })
-                    .done(function (data) {
-                        $('#response').html(AntiXSS.sanitizeInput(data));
-                        $('#nameInput').hide();
-                        getNames();
+                    .then(function (data) {
+                        console.log(data); 
+                        // $('#response').html(AntiXSS.sanitizeInput(data));
+                        // $('#nameInput').hide();
+                        // getNames();
                     });
             }
         });

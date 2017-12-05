@@ -68,6 +68,7 @@ li {
 .parent{
   height: 50%;
   width: 50%;
+  float: right; 
 }
 
 .me-chat {
