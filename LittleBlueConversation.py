@@ -23,8 +23,8 @@ class ConversationHelper():
             }
         )
         if response['output']['text']:
-            print(response)
-            print(response['output']['text'][0])
+            #print(response)
+            return(response['output']['text'][0])
 
 #helper = ConversationHelper()
 #helper.process_message("My flight is late!")

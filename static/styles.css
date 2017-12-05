@@ -32,6 +32,8 @@ li {
 }
 
 .sidebar-nav {
+  display: inline-block;
+  float: left; 
   position: relative;
   height: calc(100vh - 75px);
   overflow: auto;
