@@ -96,6 +96,16 @@ def create_msg(msg_subject, msg_body):
           "",
           msg_body
           ])
+
+
+@app.route('/api/messenger', methods=['POST'])
+def messenger():
+    msg = request.json['message']
+    response = conversation_helper.process_message(msg)
+    return json.dumps({"response": response})
+    
+    
+
 # /**
 #  * Endpoint to get a JSON array of all the visitors in the database
 #  * REST API example:
