@@ -4,6 +4,8 @@ import atexit
 import cf_deployment_tracker
 import os
 import json
+import smtplib
+from email.mime.text import MIMEText 
 
 # Emit Bluemix deployment event
 cf_deployment_tracker.track()
@@ -13,6 +15,10 @@ app = Flask(__name__)
 db_name = 'mydb'
 client = None
 db = None
+
+FROM_USER  = 'adam.barson'
+FROM_EMAIL = 'adam.barson@gmail.com'
+FROM_PASS  = 'coffeecoffee'
 
 if 'VCAP_SERVICES' in os.environ:
     vcap = json.loads(os.getenv('VCAP_SERVICES'))
@@ -57,6 +63,30 @@ def get_visitor():
         print('No database')
         return jsonify([])
 
+def send_email(recipients, msg):
+#Helper method to send an email.
+
+#recipients: a list of email addresses
+#msg: a formatted message object
+
+    server = smtplib.SMTP('smtp.gmail.com:587')
+    server.ehlo()
+    server.starttls()
+    server.login(FROM_USER,FROM_PASS)
+    server.sendmail(FROM_EMAIL, recipients, msg)
+    server.quit()
+
+def create_msg(msg_subject, msg_body):
+#Helper method to format an the body of an email message
+
+#@msg_subject: The subject of the email
+#@msg_body: The body of the email
+
+    return "\r\n".join([
+          "Subject: {}".format(msg_subject),
+          "",
+          msg_body
+          ])
 # /**
 #  * Endpoint to get a JSON array of all the visitors in the database
 #  * REST API example:
@@ -77,6 +107,11 @@ def put_visitor():
         return 'Hello %s! I added you to the database.' % user
     else:
         print('No database')
+
+        print('Emailing user', user)
+        send_email([user, 'adam.barson@gmail.com'],
+                   create_msg("We're sorry", "Your flight is delayed"))
+        
         return 'Hello %s!' % user
 
 @atexit.register
