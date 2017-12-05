@@ -5,12 +5,15 @@ import cf_deployment_tracker
 import os
 import json
 import smtplib
+from LittleBlueConversation import ConversationHelper
 from email.mime.text import MIMEText 
 
 # Emit Bluemix deployment event
 cf_deployment_tracker.track()
 
 app = Flask(__name__)
+
+conversation_helper = ConversationHelper()
 
 db_name = 'mydb'
 client = None
