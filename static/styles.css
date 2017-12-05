@@ -1,3 +1,87 @@
-.helloInput {
-  width: 200px;
+body {
+  background-color: #eaeaea;  
+}
+
+.top-nav {
+  padding: 5px 5px;
+  color: white;
+  background-color: #12458c;
+  min-height: 40%; 
+}
+
+h4 { 
+  font-family: Lobster;
+  font-weight: bold;
+  padding-left: 10px; 
+}
+
+ul {
+  list-style: none;
+  float: right; 
+}
+
+li {
+  font-family: Roboto; 
+}
+
+.top-nav > ul > li {
+  font-size: 14px;
+  display: inline-block;
+  font-family: Roboto;
+  padding-right: 5px; 
+}
+
+.sidebar-nav {
+  position: relative;
+  height: calc(100vh - 75px);
+  overflow: auto;
+  width: 140px;
+  z-index: 4;
+  background-color: #edf0f3; 
+}
+  .sidebar-nav ul {
+    padding-top: 5px;
+    display: block;
+    float: left; 
+}
+
+  .sidebar-nav li {
+    display: block;  
+}
+
+  .sidebar-nav p {
+    float: right; 
+}
+
+  .sidebar-nav i {
+    padding-right: 5px; 
+}
+  .sidebar-nav ul:hover {
+    color: grey; 
+}
+
+.chat-log { 
+  background-color: white; 
+  border: 1px solid black; 
+}
+
+.parent{
+  height: 50%;
+  width: 50%;
+}
+
+.me-chat {
+  background-color: rgb(33, 133, 252);
+  color: white;
+  float: right; 
+  margin-top: 15px; 
+  border-radius: 5px; 
+  padding: 2px 2px;
+}
+
+.you-chat {
+  background-color: grey; 
+  float: left; 
+  border-radius: 5px; 
+  padding: 2px 2px;
 }

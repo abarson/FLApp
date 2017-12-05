@@ -13,6 +13,8 @@ cf_deployment_tracker.track()
 
 app = Flask(__name__)
 
+app.static_folder = 'static' 
+
 conversation_helper = ConversationHelper()
 
 db_name = 'mydb'
