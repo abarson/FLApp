@@ -13,7 +13,6 @@
     <link href="https://fonts.googleapis.com/css?family=Lobster|Roboto" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles.css') }}">
     <link rel="stylesheet" href="static/styles.css">
-    <link rel="stylesheet" href="static/test.css">
     <!-- <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet"> -->
 
 </head>
@@ -25,7 +24,9 @@
             <li>Log Out</li>
             <li>Dashboard</li>
         </ul>
-        <h4>Big Blue Airlines</h4>
+        <a href="/">
+            <h3>Big Blue Airlines</h3>
+        </a>
     </nav>
 
     <div class="sidebar-nav">
@@ -55,10 +56,9 @@
         </ul>
     </div>
 
-    <div class="col-md-offset-4 col-md-4 parent">
-        <div class="chat-log clearfix">
-            <p class="me-chat">hello</p>
-            <p class="you-chat">hi</p>
+    <div class="col-md-4 parent">
+        <div class="chat-log">
+            <p class="you-chat">Hello, how can I help you?</p>
         </div>
         <input type="text" class="chat-box">
     </div>
@@ -71,8 +71,10 @@
     <script>
         //Submit data when enter key is pressed
         $('.chat-box').keydown(function (e) {
-            var message = $('.chat-box').val();
-            if (e.which == 13 && message.length > 0) { //catch Enter key
+            var message = $('.chat-box').val(); 
+            if (e.which == 13 && message.length > 0) { 
+                $('.chat-log').append("<p>" + message + "</p>");
+                $('.chat-box').val(""); 
                 //POST request to API to create a new visitor entry in the database
                 $.ajax({
                     method: "POST",
@@ -82,6 +84,7 @@
                 })
                     .then(function (data) {
                         console.log(data); 
+                        $('.chat-log').append("<p>" + data.slice(14, -2) + "</p>"); 
                         // $('#response').html(AntiXSS.sanitizeInput(data));
                         // $('#nameInput').hide();
                         // getNames();

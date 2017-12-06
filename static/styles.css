@@ -2,6 +2,15 @@ body {
   background-color: #eaeaea;  
 }
 
+a {
+  color: inherit; 
+}
+
+a:hover {
+  text-decoration: none; 
+  color: inherit; 
+}
+
 .top-nav {
   padding: 5px 5px;
   color: white;
@@ -9,7 +18,7 @@ body {
   min-height: 40%; 
 }
 
-h4 { 
+h3 { 
   font-family: Lobster;
   font-weight: bold;
   padding-left: 10px; 
@@ -49,10 +58,11 @@ li {
 
   .sidebar-nav li {
     display: block;  
+    margin-top: 10px;
 }
 
   .sidebar-nav p {
-    float: right; 
+    float: right;  
 }
 
   .sidebar-nav i {
@@ -63,28 +73,37 @@ li {
 }
 
 .chat-log { 
+  margin-top: 10px; 
+  height: 300px;
+  width: 500px; 
   background-color: white; 
-  border: 1px solid black; 
+}
+
+.chat-box {
+  margin-top: 10px; 
+  width: 500px; 
 }
 
 .parent{
   height: 50%;
   width: 50%;
   float: right; 
+  margin-right: 15%; 
 }
 
-.me-chat {
+.chat-log p:nth-child(odd) {
+  background-color: rgb(225, 224, 230); 
+  float: left; 
+  border-radius: 5px; 
+  padding: 2px 2px;
+  margin-top: 16px; 
+}
+
+.chat-log p:nth-child(even) {
   background-color: rgb(33, 133, 252);
   color: white;
   float: right; 
-  margin-top: 15px; 
-  border-radius: 5px; 
-  padding: 2px 2px;
-}
-
-.you-chat {
-  background-color: grey; 
-  float: left; 
+  margin-top: 36px; 
   border-radius: 5px; 
   padding: 2px 2px;
 }
