@@ -25,9 +25,19 @@ YES = "yes"
 NO  = "no"
 LATE_FLIGHT = "late_flight"
 
-FROM_USER  = 'adam.barson'
-FROM_EMAIL = 'adam.barson@gmail.com'
-FROM_PASS  = 'coffeecoffee'
+#FROM_USER  = 'adam.barson'
+#FROM_EMAIL = 'adam.barson@gmail.com'
+#FROM_PASS  = 'coffeecoffee'
+FROM_USER  = 'abarson'
+FROM_EMAIL = 'abarson@uvm.edu'
+FROM_PASS  = 'Ridger#1996'
+
+possible_delay = False
+dep = ""
+arr = ""
+delay_type = ""
+conf = ""
+
 
 flight_details = {"FLIGHT_NO" : "A118",
                 "DEP" : "Boston",
@@ -64,11 +74,54 @@ port = int(os.getenv('PORT', 8000))
 def home():
     return render_template('index.html')
 
+<<<<<<< Updated upstream
 @app.route('/flights')
 def flights():
     return render_template('flights.html')
 
 @app.route('/little_blue_chat')
+=======
+@app.route('/api/email_contacts', methods=['POST'])
+def email_contacts():
+    pass
+
+
+
+    
+@app.route('/api/status', methods=['POST'])
+def status():
+    global possible_delay
+    msg = request.json['message']
+    response = ""
+    if possible_delay:
+        response = "Brianne, there is a {}% chance that your {} to {} flight will be delayed. Should I rebook this flight for you?".format(conf, arr, dep)
+    else:
+        response = "Hey there! How is it going?"
+    return json.dumps({"response": response})
+
+@app.route('/api/alert', methods=['POST', 'GET'])
+def alert():
+    global possible_delay
+    global dep
+    global arr
+    global delay_type
+    global conf
+    dep = request.args.get("dep")
+    arr = request.args.get("arr")
+    delay_type = request.args.get("class")
+    conf = request.args.get("conf")
+    possible_delay = True
+
+    body = "Brianne, I have detected a possible delay between your {} to {} flight.\nDelay: {} \nConf: {} \nPlease log onto your Little Blue App for options.".format(dep, arr, delay_type, conf)
+
+    msg = create_msg("Possible Flight Delay", body)
+
+    send_email(['adam.barson@gmail.com'], msg)
+
+    return json.dumps({"success": True})
+
+@app.route('/litte_blue_chat')
+>>>>>>> Stashed changes
 def litte_blue_chat():
     return render_template('chat.html')
 
@@ -101,7 +154,8 @@ def send_email(recipients, msg):
 #recipients: a list of email addresses
 #msg: a formatted message object
 
-    server = smtplib.SMTP('smtp.gmail.com:587')
+    #server = smtplib.SMTP('smtp.gmail.com:587')
+    server = smtplib.SMTP('smtp.uvm.edu:587')
     server.ehlo()
     server.starttls()
     server.login(FROM_USER,FROM_PASS)
@@ -164,6 +218,7 @@ def put_visitor():
 
 
 def conversation_router(payload):
+    global possible_delay
     response = ''
     intent = conversation_helper.get_intent(payload)
     context = conversation_helper.get_context(payload)
@@ -173,11 +228,17 @@ def conversation_router(payload):
     if intent == YES:
         if conversation_helper.last_intent == LATE_FLIGHT:
             utterance = ("Okay, I will email your contact list.")
+        elif possible_delay:
+            utterance = ("Okay, I will rebook your flight for you.")
+            possible_delay = False
         else:
             utterance = ("yes..?")
     elif intent == NO:
         if conversation_helper.last_intent == LATE_FLIGHT:
             utterance = ("Okay, I won't email your contact list.")
+        elif possible_delay:
+            utterance = ("Okay, I will not rebook your flight for you.")
+            possible_delay = False
         else:
             utterance = ("no..?")
     elif intent == LATE_FLIGHT:

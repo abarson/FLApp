@@ -17,7 +17,7 @@
 
 </head>
 
-<body>
+<body onload="loadFunction()">
     <nav class="top-nav">
         <ul>
             <li>Log In</li>
@@ -57,8 +57,8 @@
     </div>
 
     <div class="col-md-4 parent">
-        <div class="chat-log">
-            <p class="you-chat">Hello, how can I help you?</p>
+        <div class="chat-log" onload="loadFunction()">
+            //<p class="you-chat">Hello, how can I help you?</p>
         </div>
         <input type="text" class="chat-box">
     </div>
@@ -68,11 +68,32 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="static/antixss.js" type="text/javascript"></script>
 
+	<script>
+		function loadFunction() {
+    		$.ajax({
+                    method: "POST",
+                    url: "./api/status",
+                    contentType: "application/json",
+                    data: JSON.stringify({ message: message })
+                })
+                    .then(function (data) {
+                        console.log(data); 
+                        $('.chat-log').append("<p>" + data.slice(14, -2) + "</p>"); 
+                        //x=document.getElementsByClassName("you-chat");
+                        //x.innerText="<p>" + data.slice(14, -2) + "</p>";
+                        // $('#response').html(AntiXSS.sanitizeInput(data));
+                        // $('#nameInput').hide();
+                        // getNames();
+                    });
+		}
+	</script>
     <script>
         //Submit data when enter key is pressed
         $('.chat-box').keydown(function (e) {
             var message = $('.chat-box').val(); 
+            var res = "";
             if (e.which == 13 && message.length > 0) { 
+            	//$('.chat-log').append("<p> Hello Brianne, 
                 $('.chat-log').append("<p>" + message + "</p>");
                 $('.chat-box').val(""); 
                 //POST request to API to create a new visitor entry in the database
@@ -85,6 +106,27 @@
                     .then(function (data) {
                         console.log(data); 
                         $('.chat-log').append("<p>" + data.slice(14, -2) + "</p>"); 
+                        // $('#response').html(AntiXSS.sanitizeInput(data));
+                        // $('#nameInput').hide();
+                        // getNames();
+                    });
+            } else if (e.which == 13){
+            	//$('.chat-log').append("<p> Hello Brianne, </p>")
+                //$('.chat-log').append("<p>" + message + "</p>");
+            	//$('.chat-log').append("<p>" + message + "</p>");
+                //$('.chat-box').val(""); 
+                //POST request to API to create a new visitor entry in the database
+                $.ajax({
+                    method: "POST",
+                    url: "./api/status",
+                    contentType: "application/json",
+                    data: JSON.stringify({ message: message })
+                })
+                    .then(function (data) {
+                        console.log(data); 
+                        $('.chat-log').append("<p>" + data.slice(14, -2) + "</p>"); 
+                        //x=document.getElementsByClassName("you-chat");
+                        //x.innerText="<p>" + data.slice(14, -2) + "</p>";
                         // $('#response').html(AntiXSS.sanitizeInput(data));
                         // $('#nameInput').hide();
                         // getNames();
