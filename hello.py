@@ -7,6 +7,7 @@ import json
 import smtplib
 from LittleBlueConversation import ConversationHelper
 from email.mime.text import MIMEText 
+import json
 
 # Emit Bluemix deployment event
 cf_deployment_tracker.track()
@@ -27,6 +28,12 @@ LATE_FLIGHT = "late_flight"
 FROM_USER  = 'adam.barson'
 FROM_EMAIL = 'adam.barson@gmail.com'
 FROM_PASS  = 'coffeecoffee'
+
+flight_details = {"FLIGHT_NO" : "A118",
+                "DEP" : "Boston",
+                "ARR" : "Austin",
+                "DEP_TIME" : "05-18-2016 20:15",
+                "ARR_TIME" : "05-18-2016 22:30"}
 
 if 'VCAP_SERVICES' in os.environ:
     vcap = json.loads(os.getenv('VCAP_SERVICES'))
@@ -57,6 +64,10 @@ port = int(os.getenv('PORT', 8000))
 def home():
     return render_template('index.html')
 
+@app.route('/flights')
+def flights():
+    return render_template('flights.html')
+
 @app.route('/little_blue_chat')
 def litte_blue_chat():
     return render_template('chat.html')
@@ -64,6 +75,11 @@ def litte_blue_chat():
 @app.route('/contacts')
 def contacts():
     return render_template('contacts.html')
+
+# Endpoint to return rebooking details
+@app.route('/details')
+def details():
+    return json.dumps(flight_details)
 
 # /* Endpoint to greet and add a new visitor to database.
 # * Send a POST request to localhost:8000/api/visitors with body
