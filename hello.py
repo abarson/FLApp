@@ -105,6 +105,10 @@ def create_msg(msg_subject, msg_body):
 def messenger():
     msg = request.json['message']
     payload = conversation_helper.ask_watson(msg)
+
+    print(conversation_helper.get_intent(payload))
+    print(conversation_helper.get_response(payload))
+    
     response = conversation_router(payload)
     return json.dumps({"response": response})
     
@@ -144,24 +148,26 @@ def conversation_router(payload):
     intent = conversation_helper.get_intent(payload)
     context = conversation_helper.get_context(payload)
     response = conversation_helper.get_response(payload)
+
+    utterance = ''
     if intent == YES:
         if conversation_helper.last_intent == LATE_FLIGHT:
-            return("Okay, I will email your contact list.")
+            utterance = ("Okay, I will email your contact list.")
         else:
-            return("yes..?")
+            utterance = ("yes..?")
     elif intent == NO:
         if conversation_helper.last_intent == LATE_FLIGHT:
-            return("Okay, I won't email your contact list.")
+            utterance = ("Okay, I won't email your contact list.")
         else:
-            return("no..?")
+            utterance = ("no..?")
     elif intent == LATE_FLIGHT:
-        return(response)
+        utterance = (response)
     else:
-        return(response)
+        utterance = (response)
 
     conversation_helper.last_intent = intent
         
-    return response
+    return utterance
 
 
 @atexit.register
