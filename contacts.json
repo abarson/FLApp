@@ -1,0 +1,6 @@
+{
+    "contacts": [
+        { "first": "Peter", "last": "Elbaum", "email": "elbaumpj@gmail.com"},
+        {"first": "Adam", "last": "Barson", "email": "adam.barson@gmail.com"}
+    ]
+}

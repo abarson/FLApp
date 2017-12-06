@@ -57,7 +57,7 @@ port = int(os.getenv('PORT', 8000))
 def home():
     return render_template('index.html')
 
-@app.route('/litte_blue_chat')
+@app.route('/little_blue_chat')
 def litte_blue_chat():
     return render_template('chat.html')
 
