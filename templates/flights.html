@@ -13,7 +13,6 @@
     <link href="https://fonts.googleapis.com/css?family=Lobster|Roboto" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles.css') }}">
     <link rel="stylesheet" href="static/styles.css">
-   
     
 </head>
 
@@ -53,11 +52,36 @@
             </li>
         </ul>
     </div>
+    <div class="col-md-4 parent">
+        <div class="chat-log">
+            <center><p id="flight_details">
+                Flight: A118<br>
+                Departure Airport: Boston<br>
+                Departure Date and time: 05-18-2016 20:15<br>
+                Arrival Airport: Austin<br>
+                Arrival Date and time: 05-18-2016 22:30<br>
+            </p></center>
+        </div>
+    </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="static/antixss.js" type="text/javascript"></script>
+    <script>
+        var para_text = document.getElementById("flight_details");
+        window.onload = function () {
+            $.ajax({
+                    method: "GET",
+                    url: "./details",
+                    //contentType: "application/json",
+                    //data: JSON.stringify({ message: message })
+                })
+                    .then(function (data) {
+                        console.log(data); 
+                        para_text.innerHTML = data.toString();
+        };
+    </script>
 
 </body>
 
