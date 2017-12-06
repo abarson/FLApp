@@ -57,9 +57,13 @@ port = int(os.getenv('PORT', 8000))
 def home():
     return render_template('index.html')
 
-@app.route('/chat')
-def chat():
+@app.route('/litte_blue_chat')
+def litte_blue_chat():
     return render_template('chat.html')
+
+@app.route('/contacts')
+def contacts():
+    return render_template('contacts.html')
 
 # /* Endpoint to greet and add a new visitor to database.
 # * Send a POST request to localhost:8000/api/visitors with body
