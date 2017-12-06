@@ -13,13 +13,16 @@ cf_deployment_tracker.track()
 
 app = Flask(__name__)
 
-app.static_folder = 'static' 
-
 conversation_helper = ConversationHelper()
 
 db_name = 'mydb'
 client = None
 db = None
+
+
+YES = "yes"
+NO  = "no"
+LATE_FLIGHT = "late_flight"
 
 FROM_USER  = 'adam.barson'
 FROM_EMAIL = 'adam.barson@gmail.com'
@@ -101,8 +104,8 @@ def create_msg(msg_subject, msg_body):
 @app.route('/api/messenger', methods=['POST'])
 def messenger():
     msg = request.json['message']
-    print(msg)
-    response = conversation_helper.process_message(msg)
+    payload = conversation_helper.ask_watson(msg)
+    response = conversation_router(payload)
     return json.dumps({"response": response})
     
     
@@ -133,6 +136,33 @@ def put_visitor():
                    create_msg("We're sorry", "Your flight is delayed"))
         
         return 'Hello %s!' % user
+
+
+
+def conversation_router(payload):
+    response = ''
+    intent = conversation_helper.get_intent(payload)
+    context = conversation_helper.get_context(payload)
+    response = conversation_helper.get_response(payload)
+    if intent == YES:
+        if conversation_helper.last_intent == LATE_FLIGHT:
+            return("Okay, I will email your contact list.")
+        else:
+            return("yes..?")
+    elif intent == NO:
+        if conversation_helper.last_intent == LATE_FLIGHT:
+            return("Okay, I won't email your contact list.")
+        else:
+            return("no..?")
+    elif intent == LATE_FLIGHT:
+        return(response)
+    else:
+        return(response)
+
+    conversation_helper.last_intent = intent
+        
+    return response
+
 
 @atexit.register
 def shutdown():
