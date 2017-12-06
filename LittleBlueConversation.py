@@ -1,9 +1,14 @@
 import watson_developer_cloud
 
-class ConversationHelper():
+YES = "yes"
+NO  = "no"
+LATE_FLIGHT = "late_flight"
 
+class ConversationHelper():
+    
     def __init__(self):
     #Constructor to initialize conversation tokens
+        self.last_intent = ''
         self.conversation = watson_developer_cloud.ConversationV1(
             username = 'fe1f3935-fd7f-498e-8fc0-ac4260774df1',
             password = 'Z5xsGiNh3WbT',
@@ -11,23 +16,35 @@ class ConversationHelper():
         )
         self.workspace_id = '296bb520-681b-4bcc-86f8-55c001aad75f'
         self.num_queries = 0
+        self.context = {}
 
-    def process_message(self, msg):
-    #Takes user text and calls Watson API.
+
+    def ask_watson(self, msg):
+    #Call the Conversation API and return the results.
         self.num_queries+=1
-        print(self.num_queries)
         response = self.conversation.message(
             workspace_id = self.workspace_id,
             input = {
                 'text': msg
-            }
+            },
+            context = self.context
         )
-        if response['output']['text']:
-            #print(response)
-            return(response['output']['text'][0])
+        return response
 
-#helper = ConversationHelper()
-#helper.process_message("My flight is late!")
+    def get_context(self, payload):
+        return payload['context']
+    
+    def get_response(self, payload):
+    #Takes user text and calls Watson API.
+        return payload['output']['text'][0]
+        
+    def get_intent(self, payload):
+        #print(response)
+        if payload['intents']:
+            intent = payload['intents'][0]['intent']
+        else:
+            intent = 'Unknown'
+        return intent
 
 
 
